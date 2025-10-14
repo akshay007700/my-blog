@@ -11,7 +11,9 @@ function addNewPost() {
         showNotification('Please fill in both title and content!', 'error');
         return;
     }
-    
+    // Top of upload.js
+if (!window.currentPosts) window.currentPosts = [];
+
     // AI Content Analysis
     const sentiment = analyzeContentSentiment(content);
     const readTime = calculateReadTime(content);
