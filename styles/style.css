@@ -1,0 +1,100 @@
+/* Custom Styles for Advanced Blog */
+
+/* Smooth transitions */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Blog card animations */
+.blog-card {
+    transition: all 0.3s ease;
+    border: 1px solid #e5e7eb;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Notification styles */
+#notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 16px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    max-width: 400px;
+}
+
+.notification-hidden {
+    display: none !important;
+}
+
+.notification-success {
+    background-color: #10b981;
+    color: white;
+}
+
+.notification-error {
+    background-color: #ef4444;
+    color: white;
+}
+
+.notification-warning {
+    background-color: #f59e0b;
+    color: white;
+}
+
+/* Editor animations */
+#editorSection {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading spinner */
+.loading-spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
