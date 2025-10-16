@@ -7,32 +7,42 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'inter': ['Inter', 'sans-serif'],
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                    }
-                }
-            }
-        }
-    </script>
     <style>
         body { font-family: 'Inter', sans-serif; }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
         .gradient-text {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .article-modal {
+        .blog-card { transition: all 0.3s ease; }
+        .blog-card:hover { transform: translateY(-5px); }
+        
+        /* Admin Button */
+        #adminButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        /* Admin Panel */
+        #adminPanel {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 20px 25px rgba(0,0,0,0.1);
+            z-index: 1001;
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        /* Article Modal */
+        #articleModal {
             display: none;
             position: fixed;
             top: 0;
@@ -43,48 +53,41 @@
             z-index: 1000;
             overflow-y: auto;
         }
-        .admin-panel {
-            display: none;
-        }
     </style>
 </head>
-<body class="bg-gray-50 font-inter">
-    <!-- Admin Access Button (Hidden but accessible via password) -->
-    <div id="adminAccess" class="fixed bottom-4 right-4 z-50">
+<body class="bg-gray-50">
+    <!-- Admin Access Button -->
+    <div id="adminButton">
         <button onclick="toggleAdminPanel()" class="bg-red-500 text-white p-3 rounded-full shadow-lg hover:bg-red-600">
             <i class="fas fa-lock"></i>
         </button>
     </div>
 
-    <!-- Admin Panel (Hidden) -->
-    <div id="adminPanel" class="admin-panel fixed top-0 left-0 w-full bg-white shadow-lg z-40 p-4">
-        <div class="container mx-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Admin Panel</h3>
-                <button onclick="toggleAdminPanel()" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input type="text" id="postTitle" placeholder="Post Title" class="p-3 border rounded-lg">
-                <input type="file" id="postImage" class="p-3 border rounded-lg">
-                <textarea id="postContent" placeholder="Post Content" class="p-3 border rounded-lg h-32 md:col-span-2"></textarea>
-                <select id="postCategory" class="p-3 border rounded-lg">
-                    <option value="technology">Technology</option>
-                    <option value="ai">Artificial Intelligence</option>
-                    <option value="web">Web Development</option>
-                    <option value="security">Cybersecurity</option>
-                    <option value="cloud">Cloud Computing</option>
-                </select>
-                <button onclick="addNewPost()" class="bg-green-500 text-white p-3 rounded-lg hover:bg-green-600">
-                    <i class="fas fa-plus mr-2"></i>Add Post
-                </button>
-            </div>
+    <!-- Admin Panel -->
+    <div id="adminPanel">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold">Admin Panel</h3>
+            <button onclick="toggleAdminPanel()" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="space-y-4">
+            <input type="text" id="postTitle" placeholder="Post Title" class="w-full p-3 border rounded-lg">
+            <textarea id="postContent" placeholder="Post Content" class="w-full p-3 border rounded-lg h-32"></textarea>
+            <input type="file" id="postImage" class="w-full p-3 border rounded-lg">
+            <select id="postCategory" class="w-full p-3 border rounded-lg">
+                <option value="technology">Technology</option>
+                <option value="ai">AI</option>
+                <option value="web">Web Development</option>
+            </select>
+            <button onclick="addNewPost()" class="w-full bg-green-500 text-white p-3 rounded-lg hover:bg-green-600">
+                Add Post
+            </button>
         </div>
     </div>
 
     <!-- Navigation -->
-    <nav class="bg-white shadow-lg sticky top-0 z-30">
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center space-x-3">
@@ -95,420 +98,50 @@
                 </div>
                 
                 <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Home</a>
-                    <a href="#trending" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Trending</a>
-                    <a href="#categories" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Categories</a>
-                    <a href="#tech-news" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Tech News</a>
-                    <a href="#tutorials" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">Tutorials</a>
+                    <a href="#home" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
+                    <a href="#blog" class="text-gray-700 hover:text-blue-600 font-medium">Blog</a>
+                    <a href="#about" class="text-gray-700 hover:text-blue-600 font-medium">About</a>
                 </div>
 
-                <div class="flex items-center space-x-4">
-                    <button class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors font-medium">
-                        Subscribe
-                    </button>
-                    <button class="md:hidden text-gray-700">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
+                <button class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600">
+                    Subscribe
+                </button>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="relative py-20 bg-gradient-to-br from-blue-50 to-indigo-100">
+    <section id="home" class="py-20 bg-gradient-to-br from-blue-50 to-indigo-100">
         <div class="container mx-auto px-4 text-center">
             <h1 class="text-5xl md:text-7xl font-bold text-gray-800 mb-6">
                 Welcome to
                 <span class="block gradient-text mt-2">TechVerse</span>
             </h1>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
-                Discover cutting-edge technology insights, tutorials, and industry trends. 
-                Your ultimate destination for tech knowledge and innovation.
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                Discover cutting-edge technology insights, tutorials, and industry trends.
             </p>
-            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-                <button class="bg-blue-500 text-white px-8 py-4 rounded-xl hover:bg-blue-600 transition-all transform hover:scale-105 font-semibold text-lg shadow-lg">
-                    <i class="fas fa-book-open mr-2"></i>Explore Blogs
-                </button>
-                <button class="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl hover:bg-white transition-all transform hover:scale-105 font-semibold text-lg">
-                    <i class="fas fa-play-circle mr-2"></i>Watch Demo
-                </button>
-            </div>
         </div>
-        
-        <!-- Animated Background Elements -->
-        <div class="absolute top-10 left-10 w-20 h-20 bg-blue-200 rounded-full opacity-20 animate-float"></div>
-        <div class="absolute bottom-10 right-10 w-16 h-16 bg-purple-200 rounded-full opacity-30 animate-float" style="animation-delay: -2s;"></div>
     </section>
 
-    <!-- Breaking News Bar -->
-    <section class="bg-red-600 text-white py-2">
+    <!-- Blog Posts Section -->
+    <section id="blog" class="py-16 bg-white">
         <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <span class="bg-white text-red-600 px-3 py-1 rounded font-bold text-sm">BREAKING</span>
-                    <marquee behavior="scroll" direction="left" class="flex-1">
-                        🚀 New: AI Revolution in Healthcare | 💡 Google Announces New AI Features | 🔒 Cybersecurity Threats on the Rise
-                    </marquee>
-                </div>
+            <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Latest Articles</h2>
+            
+            <div id="blogPosts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Posts will be loaded here by JavaScript -->
             </div>
         </div>
     </section>
-
-    <!-- Trending Section -->
-    <section id="trending" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">🔥 Trending Now</h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Most popular articles this week</p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-                <!-- Trending Post 1 -->
-                <div class="bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-8 text-white relative overflow-hidden group cursor-pointer transform hover:scale-105 transition-all duration-300" onclick="openArticle('ai-future')">
-                    <div class="relative z-10">
-                        <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">TRENDING</span>
-                        <h3 class="text-2xl font-bold mt-6 mb-4">The Future of AI in 2024</h3>
-                        <p class="text-blue-100 mb-6">Explore how artificial intelligence is reshaping industries and creating new opportunities.</p>
-                        <div class="flex items-center space-x-4 text-sm">
-                            <span><i class="fas fa-calendar mr-1"></i> March 20, 2024</span>
-                            <span><i class="fas fa-clock mr-1"></i> 8 min read</span>
-                            <span><i class="fas fa-eye mr-1"></i> 2.4K views</span>
-                        </div>
-                    </div>
-                    <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
-                </div>
-
-                <!-- Trending Post 2 -->
-                <div class="bg-gradient-to-br from-green-500 to-teal-600 rounded-2xl p-8 text-white relative overflow-hidden group cursor-pointer transform hover:scale-105 transition-all duration-300" onclick="openArticle('web-trends')">
-                    <div class="relative z-10">
-                        <span class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium">POPULAR</span>
-                        <h3 class="text-2xl font-bold mt-6 mb-4">Web Development Trends 2024</h3>
-                        <p class="text-green-100 mb-6">Latest frameworks, tools, and best practices for modern web development.</p>
-                        <div class="flex items-center space-x-4 text-sm">
-                            <span><i class="fas fa-calendar mr-1"></i> March 18, 2024</span>
-                            <span><i class="fas fa-clock mr-1"></i> 6 min read</span>
-                            <span><i class="fas fa-eye mr-1"></i> 1.8K views</span>
-                        </div>
-                    </div>
-                    <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tech News Section -->
-    <section id="tech-news" class="py-16 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">📰 Latest Tech News</h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Stay updated with the latest in technology</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- News Card 1 -->
-                <article class="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 cursor-pointer" onclick="openArticle('quantum-computing')">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=250&fit=crop" 
-                             alt="Quantum Computing" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-medium">BREAKING</span>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-purple-600 transition-colors">
-                            Quantum Computing Breakthrough
-                        </h3>
-                        <p class="text-gray-600 text-sm mb-3 leading-relaxed">
-                            Scientists achieve new milestone in quantum computing performance...
-                        </p>
-                        <div class="flex items-center justify-between text-xs text-gray-500">
-                            <span>2 hours ago</span>
-                            <span>5 min read</span>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- News Card 2 -->
-                <article class="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 cursor-pointer" onclick="openArticle('apple-vision')">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1542751110-97427bbecf20?w=400&h=250&fit=crop" 
-                             alt="Apple Vision Pro" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">NEW</span>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
-                            Apple Vision Pro Review
-                        </h3>
-                        <p class="text-gray-600 text-sm mb-3 leading-relaxed">
-                            Hands-on experience with Apple's revolutionary spatial computer...
-                        </p>
-                        <div class="flex items-center justify-between text-xs text-gray-500">
-                            <span>5 hours ago</span>
-                            <span>7 min read</span>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- News Card 3 -->
-                <article class="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 cursor-pointer" onclick="openArticle('cyber-threats')">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=250&fit=crop" 
-                             alt="Cybersecurity" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">ALERT</span>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-red-600 transition-colors">
-                            New Cyber Threats Emerge
-                        </h3>
-                        <p class="text-gray-600 text-sm mb-3 leading-relaxed">
-                            Critical security vulnerabilities discovered in popular software...
-                        </p>
-                        <div class="flex items-center justify-between text-xs text-gray-500">
-                            <span>1 day ago</span>
-                            <span>4 min read</span>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- News Card 4 -->
-                <article class="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 cursor-pointer" onclick="openArticle('meta-ai')">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=250&fit=crop" 
-                             alt="Meta AI" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">UPDATE</span>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-green-600 transition-colors">
-                            Meta's New AI Assistant
-                        </h3>
-                        <p class="text-gray-600 text-sm mb-3 leading-relaxed">
-                            Meta unveils advanced AI capabilities across its platforms...
-                        </p>
-                        <div class="flex items-center justify-between text-xs text-gray-500">
-                            <span>2 days ago</span>
-                            <span>6 min read</span>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <!-- Categories Section -->
-    <section id="categories" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">📂 Browse Categories</h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Explore content by category</p>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div class="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl p-6 text-white text-center cursor-pointer transform hover:scale-105 transition-all duration-300">
-                    <i class="fas fa-laptop-code text-3xl mb-3"></i>
-                    <h3 class="font-bold text-lg">Web Dev</h3>
-                    <p class="text-blue-100 text-sm">45 Articles</p>
-                </div>
-                <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-6 text-white text-center cursor-pointer transform hover:scale-105 transition-all duration-300">
-                    <i class="fas fa-robot text-3xl mb-3"></i>
-                    <h3 class="font-bold text-lg">AI & ML</h3>
-                    <p class="text-purple-100 text-sm">32 Articles</p>
-                </div>
-                <div class="bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl p-6 text-white text-center cursor-pointer transform hover:scale-105 transition-all duration-300">
-                    <i class="fas fa-shield-alt text-3xl mb-3"></i>
-                    <h3 class="font-bold text-lg">Security</h3>
-                    <p class="text-green-100 text-sm">28 Articles</p>
-                </div>
-                <div class="bg-gradient-to-br from-orange-500 to-red-500 rounded-xl p-6 text-white text-center cursor-pointer transform hover:scale-105 transition-all duration-300">
-                    <i class="fas fa-cloud text-3xl mb-3"></i>
-                    <h3 class="font-bold text-lg">Cloud</h3>
-                    <p class="text-orange-100 text-sm">36 Articles</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tutorials Section -->
-    <section id="tutorials" class="py-16 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">🎓 Step-by-Step Tutorials</h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Learn with hands-on guides</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Blog Post 1 -->
-                <article class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 cursor-pointer" onclick="openArticle('cloud-guide')">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=500&h=300&fit=crop" 
-                             alt="Cloud Computing" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">TUTORIAL</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors">
-                            Cloud Computing Guide 2024
-                        </h3>
-                        <p class="text-gray-600 mb-4 leading-relaxed">
-                            Complete guide to cloud platforms, services, and migration strategies for businesses.
-                        </p>
-                        <div class="flex items-center justify-between text-sm text-gray-500">
-                            <div class="flex items-center space-x-2">
-                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" 
-                                     alt="Author" class="w-6 h-6 rounded-full">
-                                <span>John Doe</span>
-                            </div>
-                            <span>March 15, 2024</span>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Blog Post 2 -->
-                <article class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 cursor-pointer" onclick="openArticle('blockchain-guide')">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=500&h=300&fit=crop" 
-                             alt="Blockchain" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">GUIDE</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-green-600 transition-colors">
-                            Blockchain Technology Explained
-                        </h3>
-                        <p class="text-gray-600 mb-4 leading-relaxed">
-                            Understanding blockchain, cryptocurrencies, and their impact on modern finance.
-                        </p>
-                        <div class="flex items-center justify-between text-sm text-gray-500">
-                            <div class="flex items-center space-x-2">
-                                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face" 
-                                     alt="Author" class="w-6 h-6 rounded-full">
-                                <span>Sarah Smith</span>
-                            </div>
-                            <span>March 12, 2024</span>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Blog Post 3 -->
-                <article class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 cursor-pointer" onclick="openArticle('security-practices')">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=500&h=300&fit=crop" 
-                             alt="Cybersecurity" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">SECURITY</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-red-600 transition-colors">
-                            Cybersecurity Best Practices
-                        </h3>
-                        <p class="text-gray-600 mb-4 leading-relaxed">
-                            Essential security measures to protect your digital assets and personal data.
-                        </p>
-                        <div class="flex items-center justify-between text-sm text-gray-500">
-                            <div class="flex items-center space-x-2">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" 
-                                     alt="Author" class="w-6 h-6 rounded-full">
-                                <span>Mike Johnson</span>
-                            </div>
-                            <span>March 10, 2024</span>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <!-- Newsletter -->
-    <section class="py-16 bg-gradient-to-r from-gray-900 to-blue-900 text-white">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">📧 Stay Updated</h2>
-            <p class="text-gray-300 max-w-2xl mx-auto mb-8 text-lg">
-                Get the latest tech news, tutorials, and insights delivered directly to your inbox.
-            </p>
-            <div class="max-w-md mx-auto flex flex-col sm:flex-row space-y-4 sm:space-y-0">
-                <input type="email" placeholder="Enter your email address" 
-                       class="flex-1 px-6 py-4 rounded-l-lg sm:rounded-r-none rounded-r-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg">
-                <button class="bg-blue-500 px-8 py-4 rounded-r-lg sm:rounded-l-none rounded-l-lg hover:bg-blue-600 transition-colors font-semibold text-lg whitespace-nowrap">
-                    <i class="fas fa-paper-plane mr-2"></i>Subscribe
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="md:col-span-2">
-                    <div class="flex items-center space-x-3 mb-6">
-                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-blog text-white"></i>
-                        </div>
-                        <span class="text-2xl font-bold text-white">TechVerse</span>
-                    </div>
-                    <p class="text-gray-400 max-w-md text-lg leading-relaxed">
-                        Your premier destination for technology insights, tutorials, and industry trends. 
-                        Empowering developers and tech enthusiasts worldwide.
-                    </p>
-                    <div class="flex space-x-4 mt-6">
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-500 transition-colors">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-500 transition-colors">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="font-semibold text-lg mb-4">Quick Links</h3>
-                    <ul class="space-y-3 text-gray-400">
-                        <li><a href="#home" class="hover:text-white transition-colors">Home</a></li>
-                        <li><a href="#trending" class="hover:text-white transition-colors">Trending</a></li>
-                        <li><a href="#tech-news" class="hover:text-white transition-colors">Tech News</a></li>
-                        <li><a href="#tutorials" class="hover:text-white transition-colors">Tutorials</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="font-semibold text-lg mb-4">Categories</h3>
-                    <ul class="space-y-3 text-gray-400">
-                        <li><a href="#" class="hover:text-white transition-colors">Web Development</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">AI & Machine Learning</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Cloud Computing</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Cybersecurity</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-                <p>&copy; 2024 TechVerse. All rights reserved. Made with <i class="fas fa-heart text-red-500"></i> for the tech community.</p>
-            </div>
-        </div>
-    </footer>
 
     <!-- Article Modal -->
-    <div id="articleModal" class="article-modal">
+    <div id="articleModal">
         <div class="container mx-auto px-4 py-8">
-            <div class="bg-white rounded-2xl max-w-4xl mx-auto relative">
-                <button onclick="closeArticle()" class="absolute top-4 right-4 z-10 bg-gray-800 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-700">
+            <div class="bg-white rounded-2xl max-w-4xl mx-auto p-6">
+                <button onclick="closeArticle()" class="float-right text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times"></i>
                 </button>
-                <div id="articleContent" class="p-8 max-h-[80vh] overflow-y-auto">
+                <div id="articleContent">
                     <!-- Article content will be loaded here -->
                 </div>
             </div>
@@ -516,141 +149,101 @@
     </div>
 
     <script>
-        // Articles Database
-        const articles = {
-            'ai-future': {
-                title: 'The Future of AI in 2024',
-                image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400&fit=crop',
-                content: `
-                    <h1 class="text-4xl font-bold text-gray-800 mb-6">The Future of AI in 2024</h1>
-                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400&fit=crop" alt="AI Future" class="w-full h-64 object-cover rounded-lg mb-6">
-                    <div class="prose prose-lg max-w-none">
-                        <p class="text-gray-600 mb-4">Artificial Intelligence continues to evolve at an unprecedented pace, transforming industries and creating new opportunities across the globe.</p>
-                        
-                        <h2 class="text-2xl font-bold mt-8 mb-4">Key Trends Shaping AI in 2024</h2>
-                        
-                        <h3 class="text-xl font-bold mt-6 mb-3">1. Generative AI Maturation</h3>
-                        <p class="text-gray-600 mb-4">Generative AI models are becoming more sophisticated, enabling creative applications in content creation, design, and software development.</p>
-                        
-                        <h3 class="text-xl font-bold mt-6 mb-3">2. Edge AI Expansion</h3>
-                        <p class="text-gray-600 mb-4">AI processing is moving closer to data sources, enabling real-time decision making in IoT devices and mobile applications.</p>
-                        
-                        <h3 class="text-xl font-bold mt-6 mb-3">3. Ethical AI Framework</h3>
-                        <p class="text-gray-600 mb-4">Increased focus on responsible AI development, including transparency, fairness, and accountability in AI systems.</p>
-                        
-                        <h2 class="text-2xl font-bold mt-8 mb-4">Industry Impact</h2>
-                        <p class="text-gray-600 mb-4">From healthcare diagnostics to autonomous vehicles, AI is revolutionizing how we work and live. The integration of AI across various sectors continues to accelerate, offering unprecedented opportunities for innovation and efficiency.</p>
+        // Articles Data
+        let articles = JSON.parse(localStorage.getItem('blogPosts')) || [];
+        
+        // Load articles on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadArticles();
+        });
+        
+        function loadArticles() {
+            const container = document.getElementById('blogPosts');
+            
+            if (articles.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <i class="fas fa-inbox text-4xl text-gray-400 mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-600">No articles yet</h3>
+                        <p class="text-gray-500">Use the admin panel to add posts!</p>
                     </div>
-                `,
-                author: 'Dr. Sarah Chen',
-                date: 'March 20, 2024',
-                readTime: '8 min read'
-            },
-            'web-trends': {
-                title: 'Web Development Trends 2024',
-                image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=400&fit=crop',
-                content: `
-                    <h1 class="text-4xl font-bold text-gray-800 mb-6">Web Development Trends 2024</h1>
-                    <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=400&fit=crop" alt="Web Development" class="w-full h-64 object-cover rounded-lg mb-6">
-                    <div class="prose prose-lg max-w-none">
-                        <p class="text-gray-600 mb-4">The web development landscape continues to evolve rapidly, with new frameworks, tools, and best practices emerging to meet the demands of modern users.</p>
-                        
-                        <h2 class="text-2xl font-bold mt-8 mb-4">Emerging Technologies</h2>
-                        
-                        <h3 class="text-xl font-bold mt-6 mb-3">1. React Server Components</h3>
-                        <p class="text-gray-600 mb-4">Server-side rendering and component architecture are merging to create faster, more efficient web applications.</p>
-                        
-                        <h3 class="text-xl font-bold mt-6 mb-3">2. WebAssembly (WASM)</h3>
-                        <p class="text-gray-600 mb-4">Enabling near-native performance for web applications, opening up new possibilities for complex applications in the browser.</p>
-                        
-                        <h3 class="text-xl font-bold mt-6 mb-3">3. Edge Computing</h3>
-                        <p class="text-gray-600 mb-4">Distributed computing architecture bringing computation and data storage closer to the location where it's needed.</p>
-                        
-                        <h2 class="text-2xl font-bold mt-8 mb-4">Best Practices</h2>
-                        <p class="text-gray-600 mb-4">Focus on performance optimization, accessibility, and user experience continues to be paramount in modern web development.</p>
-                    </div>
-                `,
-                author: 'Mike Rodriguez',
-                date: 'March 18, 2024',
-                readTime: '6 min read'
+                `;
+                return;
             }
-        };
-
-        // Admin Panel Functions
+            
+            container.innerHTML = articles.map(article => `
+                <div class="blog-card bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer" onclick="openArticle('${article.id}')">
+                    <img src="${article.image}" alt="${article.title}" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">${article.title}</h3>
+                        <p class="text-gray-600 mb-4">${article.excerpt}</p>
+                        <div class="flex justify-between text-sm text-gray-500">
+                            <span>${article.date}</span>
+                            <span>${article.readTime}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
         function toggleAdminPanel() {
             const panel = document.getElementById('adminPanel');
             panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
         }
-
+        
         function addNewPost() {
             const title = document.getElementById('postTitle').value;
             const content = document.getElementById('postContent').value;
             const category = document.getElementById('postCategory').value;
             
-            if (title && content) {
-                alert('Post added successfully! (This would save to database in real implementation)');
-                // Clear form
-                document.getElementById('postTitle').value = '';
-                document.getElementById('postContent').value = '';
-                document.getElementById('postImage').value = '';
-                toggleAdminPanel();
-            } else {
+            if (!title || !content) {
                 alert('Please fill all fields!');
+                return;
             }
+            
+            const newArticle = {
+                id: 'post-' + Date.now(),
+                title: title,
+                content: content,
+                excerpt: content.substring(0, 100) + '...',
+                category: category,
+                date: new Date().toLocaleDateString(),
+                readTime: '5 min read',
+                image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&h=300&fit=crop'
+            };
+            
+            articles.unshift(newArticle);
+            localStorage.setItem('blogPosts', JSON.stringify(articles));
+            loadArticles();
+            toggleAdminPanel();
+            
+            // Clear form
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postContent').value = '';
+            
+            alert('Post added successfully!');
         }
-
-        // Article Modal Functions
+        
         function openArticle(articleId) {
-            const article = articles[articleId];
+            const article = articles.find(a => a.id === articleId);
             if (article) {
                 document.getElementById('articleContent').innerHTML = `
-                    <div class="border-b border-gray-200 pb-6 mb-6">
-                        <h1 class="text-4xl font-bold text-gray-800 mb-4">${article.title}</h1>
-                        <div class="flex items-center space-x-4 text-gray-600">
-                            <div class="flex items-center space-x-2">
-                                <i class="fas fa-user"></i>
-                                <span>${article.author}</span>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <i class="fas fa-calendar"></i>
-                                <span>${article.date}</span>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <i class="fas fa-clock"></i>
-                                <span>${article.readTime}</span>
-                            </div>
-                        </div>
+                    <h1 class="text-3xl font-bold mb-4">${article.title}</h1>
+                    <div class="text-gray-600 mb-4">
+                        <span>${article.date} • ${article.readTime}</span>
                     </div>
-                    ${article.content}
+                    <img src="${article.image}" alt="${article.title}" class="w-full h-64 object-cover rounded-lg mb-6">
+                    <div class="prose max-w-none">
+                        <p class="text-gray-700 leading-relaxed">${article.content}</p>
+                    </div>
                 `;
                 document.getElementById('articleModal').style.display = 'block';
-                document.body.style.overflow = 'hidden';
             }
         }
-
+        
         function closeArticle() {
             document.getElementById('articleModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
         }
-
-        // Close modal when clicking outside
-        document.getElementById('articleModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeArticle();
-            }
-        });
-
-        // Smooth scroll
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
-        });
     </script>
 </body>
 </html>
