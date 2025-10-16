@@ -1,0 +1,21 @@
+{
+  "site": {
+    "name": "TechVerse",
+    "description": "Advanced technology blog and news platform",
+    "version": "1.0.0",
+    "author": "TechVerse Team"
+  },
+  "features": {
+    "darkMode": true,
+    "notifications": true,
+    "offlineSupport": true,
+    "adminPanel": true,
+    "newsletter": true
+  },
+  "settings": {
+    "autoSave": true,
+    "backupInterval": 3600000,
+    "maxUploadSize": 5242880,
+    "allowedFileTypes": ["image/jpeg", "image/png", "image/gif"]
+  }
+}

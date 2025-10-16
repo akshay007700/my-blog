@@ -1,0 +1,32 @@
+{
+  "articles": [
+    {
+      "id": "ai-future",
+      "title": "The Future of AI in 2024",
+      "excerpt": "Explore how artificial intelligence is reshaping industries and creating new opportunities.",
+      "content": "Full article content about AI future...",
+      "category": "AI",
+      "categoryColor": "purple",
+      "author": "Dr. Sarah Chen",
+      "authorAvatar": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face",
+      "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&h=300&fit=crop",
+      "date": "March 20, 2024",
+      "readTime": "8 min read",
+      "views": 1240
+    },
+    {
+      "id": "web-trends",
+      "title": "Web Development Trends 2024",
+      "excerpt": "Latest frameworks, tools, and best practices for modern web development.",
+      "content": "Full article content about web trends...",
+      "category": "Web Development",
+      "categoryColor": "green",
+      "author": "Mike Rodriguez",
+      "authorAvatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face",
+      "image": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=500&h=300&fit=crop",
+      "date": "March 18, 2024",
+      "readTime": "6 min read",
+      "views": 980
+    }
+  ]
+}
