@@ -77,8 +77,11 @@ function renderPosts() {
     }
     
     blogPostsContainer.innerHTML = currentPosts.map(post => `
-        <div class="blog-card bg-white rounded-lg shadow-md overflow-hidden">
-            <img src="${post.image}" alt="${post.title}" class="w-full h-48 object-cover">
+    <div class="blog-card bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
+         onclick="window.location.href='article.html?id=${post.id}'">
+        <img src="${post.image}" alt="${post.title}" class="w-full h-48 object-cover">
+        ...
+
             <div class="p-4">
                 <div class="flex justify-between items-start mb-2">
                     <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full capitalize">
