@@ -1,0 +1,21 @@
+{
+    "website": {
+        "name": "MyAdvancedBlog",
+        "version": "1.0.0",
+        "description": "Advanced blog website with auto-upload and AI features"
+    },
+    "features": {
+        "autoUpload": true,
+        "notifications": true,
+        "aiAnalysis": true,
+        "darkMode": true,
+        "offlineSupport": true,
+        "autoBackup": true
+    },
+    "settings": {
+        "autoSaveInterval": 30000,
+        "backupInterval": 300000,
+        "maxFileSize": 5242880,
+        "allowedFileTypes": ["image/jpeg", "image/png", "image/gif"]
+    }
+}
