@@ -30,6 +30,18 @@ function App() {
       </p>
     </>
   )
+  import { Outlet } from "react-router-dom";
+import TabLayout from "./pages/Tabs/TabLayout";
+
+export default function App() {
+  return (
+    <div style={{ paddingBottom: "70px" }}>
+      <Outlet />
+      <TabLayout />
+    </div>
+  );
+}
+
 }
 
 export default App

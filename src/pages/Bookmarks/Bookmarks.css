@@ -1,0 +1,101 @@
+.bm-page {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+.bm-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+/* Empty View */
+.bm-empty {
+  text-align: center;
+  margin-top: 80px;
+  color: #666;
+}
+
+.bm-empty-icon {
+  font-size: 60px;
+  margin-bottom: 10px;
+}
+
+/* Bookmarks List */
+.bm-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bm-card {
+  position: relative;
+  display: flex;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  transition: 0.2s;
+}
+
+.bm-card:hover {
+  background: #f8f8f8;
+}
+
+.bm-link {
+  display: flex;
+  gap: 15px;
+  text-decoration: none;
+  color: black;
+  flex: 1;
+}
+
+.bm-img {
+  width: 130px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.bm-info {
+  padding: 10px;
+  flex: 1;
+}
+
+.bm-cat {
+  background: black;
+  color: white;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
+.bm-heading {
+  margin: 6px 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.bm-desc {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.bm-stats {
+  display: flex;
+  gap: 15px;
+  color: gray;
+}
+
+/* Remove Button */
+.bm-remove {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: black;
+  color: white;
+  border: none;
+  padding: 4px 9px;
+  border-radius: 50%;
+  cursor: pointer;
+}
