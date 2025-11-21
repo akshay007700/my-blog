@@ -1,0 +1,146 @@
+.search-page {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+.s-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 15px;
+}
+
+/* Search Bar */
+.s-bar {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 8px 14px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.s-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+.clear-btn {
+  padding: 4px 8px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Category Chips */
+.category-list {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 14px;
+}
+
+.cat-btn {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: #eee;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.cat-btn.active {
+  background: black;
+  color: white;
+}
+
+/* Sort Buttons */
+.sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.sort-btn {
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: #ddd;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.sort-btn.active {
+  background: black;
+  color: white;
+}
+
+/* Results */
+.result-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.result-card {
+  display: flex;
+  gap: 14px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 12px;
+  text-decoration: none;
+  color: black;
+  transition: 0.2s;
+}
+
+.result-card:hover {
+  background: #f8f8f8;
+}
+
+.r-image {
+  width: 120px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.r-info {
+  flex: 1;
+}
+
+.r-cat {
+  background: black;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.r-title {
+  margin: 6px 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.r-desc {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.r-meta {
+  display: flex;
+  gap: 14px;
+  font-size: 13px;
+  color: gray;
+}
+
+.placeholder {
+  text-align: center;
+  color: gray;
+  margin-top: 40px;
+}

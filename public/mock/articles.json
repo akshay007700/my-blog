@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1",
+    "title": "AI is Changing the World",
+    "description": "Artificial Intelligence is transforming industries...",
+    "content": "<p>This is full HTML content...</p>",
+    "image": "/mock/a1.jpg",
+    "category": "Tech",
+    "date": "2024-10-12",
+    "author": "Ellie",
+    "views": 23452,
+    "likes": 890
+  }
+]

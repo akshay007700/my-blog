@@ -1,0 +1,116 @@
+.trending {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.subtitle {
+  color: gray;
+  margin-top: 5px;
+}
+
+/* ---- Time Filters ---- */
+.time-filter {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+.time-btn {
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: #eee;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.time-btn.active {
+  background: black;
+  color: white;
+  border-color: black;
+}
+
+/* ---- Trending List ---- */
+.t-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.t-card {
+  display: flex;
+  gap: 15px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  text-decoration: none;
+  color: black;
+  position: relative;
+  transition: 0.2s;
+}
+
+.t-card:hover {
+  background: #f8f8f8;
+}
+
+.rank {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: black;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.thumb {
+  width: 130px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.t-info {
+  flex: 1;
+}
+
+.badge {
+  background: #000;
+  color: white;
+  padding: 4px 12px;
+  font-size: 12px;
+  border-radius: 8px;
+}
+
+.t-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 8px 0 6px 0;
+}
+
+.t-desc {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.t-stats {
+  display: flex;
+  gap: 15px;
+  font-size: 13px;
+  color: gray;
+}
