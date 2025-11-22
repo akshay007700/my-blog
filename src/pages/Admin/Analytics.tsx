@@ -36,8 +36,8 @@ export default function Analytics() {
   const totalViews = articles.reduce((s, a) => s + a.views, 0);
   const totalLikes = articles.reduce((s, a) => s + a.likes, 0);
 
-  // Category Analytics
-  const categoryData = Object.values(
+  // Category Analytics FIXED
+  const categoryData: any[] = Object.values(
     articles.reduce((acc: any, article) => {
       if (!acc[article.category]) {
         acc[article.category] = { category: article.category, views: 0 };
