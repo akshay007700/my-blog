@@ -5,101 +5,119 @@ import "./Dashboard.css";
 interface Article {
   id: string;
   title: string;
-  category: string;
   views: number;
   likes: number;
   image: string;
   date: string;
 }
 
-export default function AdminDashboard() {
+export default function Dashboard() {
   const navigate = useNavigate();
+
   const [articles, setArticles] = useState<Article[]>([]);
+  const [totalViews, setTotalViews] = useState(0);
+  const [totalLikes, setTotalLikes] = useState(0);
 
   useEffect(() => {
-    const admin = localStorage.getItem("adminLogged");
-    if (!admin) navigate("/admin/login");
+    const saved = localStorage.getItem("articles");
+    const list: Article[] = saved ? JSON.parse(saved) : [];
 
-    async function loadData() {
-      const res = await fetch("/mock/articles.json");
-      const data = await res.json();
-      setArticles(data);
-    }
+    setArticles(list);
 
-    loadData();
+    setTotalViews(list.reduce((s, a) => s + a.views, 0));
+    setTotalLikes(list.reduce((s, a) => s + a.likes, 0));
   }, []);
-
-  function logout() {
-    localStorage.removeItem("adminLogged");
-    navigate("/admin/login");
-  }
 
   return (
     <div className="admin-dashboard">
-      {/* Sidebar */}
-      <div className="sidebar">
-        <h2 className="sb-title">Admin Panel</h2>
 
-        <div className="sb-links">
-          <button className="sb-btn active">Dashboard</button>
-          <button className="sb-btn">Add Article</button>
-          <button className="sb-btn">Manage News</button>
-          <button className="sb-btn">Users</button>
-          <button className="sb-btn">Analytics</button>
-          <button
-  className="edit-btn"
-  onClick={() => navigate(`/admin/edit/${a.id}`)}
->
-  Edit
-</button>
-<button onClick={() => navigate("/admin/add-article")} className="sb-btn">
-  Add Article
-</button>
-<button onClick={() => navigate("/admin/manage")} className="sb-btn">
-  Manage Articles
-</button>
-<button onClick={() => navigate("/admin/analytics")} className="sb-btn">
-  Analytics
-</button>
-<button onClick={() => navigate("/admin/users")} className="sb-btn">
-  Users
-</button>
+      <h1 className="db-title">Admin Dashboard</h1>
 
+      {/* STATS */}
+      <div className="stats-grid">
 
+        <div className="stat-card">
+          <h2>{articles.length}</h2>
+          <p>Total Articles</p>
         </div>
 
-        <button onClick={logout} className="logout-btn">
-          Logout
-        </button>
+        <div className="stat-card">
+          <h2>{totalViews}</h2>
+          <p>Total Views</p>
+        </div>
+
+        <div className="stat-card">
+          <h2>{totalLikes}</h2>
+          <p>Total Likes</p>
+        </div>
+
+        <div className="stat-card">
+          <h2>152</h2>
+          <p>Total Users</p>
+        </div>
+
       </div>
 
-      {/* Main Dashboard Content */}
-      <div className="dashboard-content">
-        <h1 className="db-title">Dashboard Overview</h1>
 
-        {/* Stats Boxes */}
-        <div className="stats-grid">
-          <div className="stat-box">
-            <h2>{articles.length}</h2>
-            <p>Total Articles</p>
-          </div>
+      {/* ACTION BUTTONS */}
+      <div className="dashboard-actions">
 
-          <div className="stat-box">
-            <h2>
-              {articles.reduce((sum, a) => sum + a.views, 0).toLocaleString()}
-            </h2>
-            <p>Total Views</p>
-          </div>
+        <button
+          className="db-btn"
+          onClick={() => navigate("/admin/add")}
+        >
+          ➕ Add Article
+        </button>
 
-          <div className="stat-box">
-            <h2>
-              {articles.reduce((sum, a) => sum + a.likes, 0).toLocaleString()}
-            </h2>
-            <p>Total Likes</p>
-          </div>
-           
+        <button
+          className="db-btn"
+          onClick={() => navigate("/admin/manage")}
+        >
+          📦 Manage Articles
+        </button>
 
-          <div className="stat-box">
-            <h2>152</h2>
-            <p>Active Users</p>
+        <button
+          className="db-btn"
+          onClick={() => navigate("/admin/users")}
+        >
+          👤 Manage Users
+        </button>
+
+        <button
+          className="db-btn"
+          onClick={() => navigate("/admin/analytics")}
+        >
+          📊 Analytics
+        </button>
+
+      </div>
+
+
+      {/* RECENT ARTICLES SECTION */}
+      <h2 className="sub-title">Recent Articles</h2>
+
+      <div className="recent-list">
+
+        {articles.slice(0, 5).map((a) => (
+          <div key={a.id} className="recent-item">
+
+            <img src={a.image} className="recent-img" />
+
+            <div className="recent-info">
+              <h4>{a.title}</h4>
+              <span>{a.date}</span>
+            </div>
+
           </div>
+        ))}
+
+        {articles.length === 0 && (
+          <p>No Articles Added</p>
+        )}
+
+      </div>
+
+
+    </div>
+  );
+}
