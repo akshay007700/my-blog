@@ -1,85 +1,61 @@
-// Home Page
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "./Home.css"; // optional styling
-
-interface Article {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  category: string;
-  date: string;
-}
-
 export default function Home() {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [category, setCategory] = useState("All");
 
-  const categories = ["All", "Tech", "Sports", "Gaming", "AI", "Politics"];
-
-  useEffect(() => {
-    async function loadData() {
-      setLoading(true);
-      try {
-        const res = await fetch("/mock/home.json"); // you can replace with API
-        const data = await res.json();
-        setArticles(data);
-      } catch (err) {
-        console.log("Error loading", err);
-      }
-      setLoading(false);
-    }
-    loadData();
-  }, []);
-
-  const filtered =
-    category === "All"
-      ? articles
-      : articles.filter((a) => a.category === category);
+  const demoArticles = [
+    {
+      id: "1",
+      title: "AI Revolution begins",
+      description: "A massive shift happening in AI industry.",
+      image: "https://picsum.photos/400/200?1",
+      category: "AI",
+      date: "Today"
+    },
+    {
+      id: "2",
+      title: "iPhone 17 leaked!",
+      description: "Crazy design changes spotted",
+      image: "https://picsum.photos/400/200?2",
+      category: "Tech",
+      date: "Yesterday"
+    },
+    {
+      id: "3",
+      title: "India won finals!",
+      description: "Historic win! 5 wicket victory",
+      image: "https://picsum.photos/400/200?3",
+      category: "Sports",
+      date: "2 days ago"
+    },
+  ];
 
   return (
-    <div className="home">
-      {/* ----------- Header ----------- */}
-      <div className="home-header">
-        <h1 className="title">Top Headlines</h1>
+    <div style={{padding:"20px", color:"white"}}>
+      <h1 style={{marginBottom:"15px"}}>Top Stories 🔥</h1>
 
-        <div className="category-bar">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setCategory(cat)}
-              className={cat === category ? "cat active" : "cat"}
-            >
-              {cat}
-            </button>
-          ))}
+      {demoArticles.map(item => (
+        <div 
+          key={item.id}
+          style={{
+            background:"#222",
+            padding:"15px",
+            borderRadius:"10px",
+            marginBottom:"20px"
+          }}
+        >
+          <img 
+            src={item.image} 
+            style={{width:"100%", borderRadius:"8px"}} 
+          />
+
+          <h2 style={{marginTop:"10px"}}>{item.title}</h2>
+
+          <p style={{opacity:.7}}>{item.description}</p>
+
+          <small style={{opacity:.5}}>
+            {item.category} • {item.date}
+          </small>
         </div>
-      </div>
+      ))}
 
-      {/* ----------- Loading ----------- */}
-      {loading && <p className="loading">Loading Articles...</p>}
-
-      {/* ----------- Article List ----------- */}
-      <div className="articles">
-        {filtered.map((item) => (
-          <Link
-            key={item.id}
-            to={`/article/${item.id}`}
-            className="card"
-          >
-            <img src={item.image} className="thumbnail" />
-
-            <div className="card-info">
-              <span className="cat-tag">{item.category}</span>
-              <h2 className="card-title">{item.title}</h2>
-              <p className="card-description">{item.description}</p>
-              <span className="date">{item.date}</span>
-            </div>
-          </Link>
-        ))}
-      </div>
     </div>
   );
 }
