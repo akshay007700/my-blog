@@ -1,4 +1,19 @@
+const BASE = "/my-blog";
 import { createBrowserRouter } from "react-router-dom";
+
+const router = createBrowserRouter([
+  { path: `${BASE}/`, element: <TabsLayout /> },
+  { path: `${BASE}/trending`, element: <Trending /> },
+  { path: `${BASE}/search`, element: <Search /> },
+  { path: `${BASE}/bookmarks`, element: <Bookmarks /> },
+  { path: `${BASE}/settings`, element: <Settings /> },
+
+  { path: `${BASE}/admin`, element: <AdminDashboard /> },
+  { path: `${BASE}/admin/login`, element: <Login /> },
+  { path: `${BASE}/admin/analytics`, element: <Analytics /> },
+  
+  { path: `${BASE}/*`, element: <NotFound /> },  
+]);
 
 import Home from "./pages/Home/Home";
 import Trending from "./pages/Trending/Trending";
